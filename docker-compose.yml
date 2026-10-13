@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: asset_management_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres123}
+      POSTGRES_DB: ${DB_NAME:-asset_management}
+      TZ: Asia/Jakarta
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      # Data persisten agar data tidak hilang saat container di-restart/stop
+      - postgres_data:/var/lib/postgresql/data
+      
+      # Seluruh file .sql di folder ini akan otomatis dieksekusi saat inisialisasi awal container
+      - ./database:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-asset_management}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Opsional: pgAdmin 4 untuk antarmuka GUI (Web Database Management)
+
+volumes:
+  postgres_data:
+    driver: local
