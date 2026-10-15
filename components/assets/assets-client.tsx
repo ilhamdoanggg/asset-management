@@ -20,7 +20,7 @@ import {
   checkoutAssetAction,
   returnAssetAction,
 } from "@/app/actions/assets";
-import type { Asset } from "@/lib/assets";
+import type { Asset } from "@/types";
 import {
   STATUS_OPTIONS,
   selectClass,
@@ -322,4 +322,3 @@ export function AssetsClient({
     </>
   );
 }
-

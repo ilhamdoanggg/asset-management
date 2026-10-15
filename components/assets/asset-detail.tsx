@@ -4,7 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/format";
-import type { Asset, AssetHistoryItem } from "@/lib/assets";
+import type { Asset, AssetHistoryItem } from "@/types";
 import { statusLabel, statusVariant, type AssetDict } from "@/components/assets/asset-utils";
 
 interface AssetDetailProps {
@@ -132,4 +132,3 @@ export function AssetDetail({ asset, history, dict, locale }: AssetDetailProps) 
     </div>
   );
 }
-

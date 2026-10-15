@@ -1,14 +1,5 @@
 import { sql } from "@/lib/db";
-
-export interface Category {
-  id: string;
-  code: string;
-  name: string;
-  description: string | null;
-  asset_count: number;
-  asset_value: number;
-  created_at: string;
-}
+import type {Category} from '@/types'
 
 export async function getCategories(): Promise<Category[]> {
   const rows = await sql<Array<Category>>`

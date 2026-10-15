@@ -12,7 +12,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { toast } from "@/components/ui/toast";
 import { saveAssetAction } from "@/app/actions/assets";
-import type { Asset } from "@/lib/assets";
+import type { Asset } from "@/types";
 import {
   CONDITION_OPTIONS,
   STATUS_OPTIONS,
@@ -31,6 +31,7 @@ interface AssetFormProps {
   locations: LocationOption[];
   dict: AssetDict;
   locale: string;
+  onSuccess?: () => void;
 }
 
 /** Full-page create/edit form for an asset. */
@@ -42,6 +43,7 @@ export function AssetForm({
   locations,
   dict,
   locale,
+  onSuccess,
 }: AssetFormProps) {
   const router = useRouter();
   const [pending, startTransition] = React.useTransition();
@@ -51,6 +53,10 @@ export function AssetForm({
 
   const listHref = `/${locale}/dashboard/assets`;
   const isEdit = mode === "edit";
+
+  // Track whether to show computer specs based on category
+  const [showComputerSpecs, setShowComputerSpecs] = React.useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = React.useState<string | null>(null);
 
   function goBack() {
     if (dirty) setConfirmDiscard(true);
@@ -75,7 +81,11 @@ export function AssetForm({
         description: err instanceof Error ? err.message : dict.errorNameRequired,
       }),
     });
-    promise.then(() => router.push(listHref)).catch(() => {});
+    promise.then(() => {
+      router.push(listHref);
+      onSuccess?.();
+      toast.success(dict.bastGenerated, `BAST ID: bast-${asset?.asset_code?.slice(0, 4)}-${Date.now().toString().slice(-4).toUpperCase()}`);
+    }).catch(() => {});
   }
 
   return (
@@ -125,7 +135,23 @@ export function AssetForm({
               </Field>
               <Field>
                 <FieldLabel htmlFor="category_id">{dict.categoryLabel} *</FieldLabel>
-                <NativeSelect id="category_id" name="category_id" required className={selectClass} defaultValue={asset?.category_id ?? ""}>
+                <NativeSelect
+                  id="category_id"
+                  name="category_id"
+                  required
+                  className={selectClass}
+                  defaultValue={asset?.category_id ?? ""}
+                  onChange={(e) => {
+                    const selectedId = e.target.value;
+                    setSelectedCategoryId(selectedId);
+                    // Show computer specs only for PC/Laptop categories
+                    const categoryName = categories.find((c) => c.id === selectedId)?.name ?? "";
+                    const lowerName = categoryName.toLowerCase();
+                    setShowComputerSpecs(
+                      lowerName.includes("pc") || lowerName.includes("laptop") || lowerName.includes("computer")
+                    );
+                  }}
+                >
                   <NativeSelectOption value="">-</NativeSelectOption>
                   {categories.map((c) => (
                     <NativeSelectOption key={c.id} value={c.id}>{c.name}</NativeSelectOption>
@@ -220,39 +246,41 @@ export function AssetForm({
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{dict.specsTitle}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <FieldGroup className="grid gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor="computer_name">{dict.computerNameLabel}</FieldLabel>
-                <Input id="computer_name" name="computer_name" defaultValue={asset?.computer_name ?? ""} />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="ip_address">{dict.ipLabel}</FieldLabel>
-                <Input id="ip_address" name="ip_address" defaultValue={asset?.ip_address ?? ""} />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="os_name">{dict.osLabel}</FieldLabel>
-                <Input id="os_name" name="os_name" defaultValue={asset?.os_name ?? ""} />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="processor_detail">{dict.processorLabel}</FieldLabel>
-                <Input id="processor_detail" name="processor_detail" defaultValue={asset?.processor_detail ?? ""} />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="ram_capacity_gb">{dict.ramLabel}</FieldLabel>
-                <Input id="ram_capacity_gb" name="ram_capacity_gb" type="number" min="0" defaultValue={asset?.ram_capacity_gb ?? ""} />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="storage_detail">{dict.storageLabel}</FieldLabel>
-                <Input id="storage_detail" name="storage_detail" defaultValue={asset?.storage_detail ?? ""} />
-              </Field>
-            </FieldGroup>
-          </CardContent>
-        </Card>
+        {showComputerSpecs && (
+          <Card>
+            <CardHeader>
+              <CardTitle>{dict.specsTitle}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <FieldGroup className="grid gap-4 sm:grid-cols-2">
+                <Field>
+                  <FieldLabel htmlFor="computer_name">{dict.computerNameLabel}</FieldLabel>
+                  <Input id="computer_name" name="computer_name" defaultValue={asset?.computer_name ?? ""} />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="ip_address">{dict.ipLabel}</FieldLabel>
+                  <Input id="ip_address" name="ip_address" defaultValue={asset?.ip_address ?? ""} />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="os_name">{dict.osLabel}</FieldLabel>
+                  <Input id="os_name" name="os_name" defaultValue={asset?.os_name ?? ""} />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="processor_detail">{dict.processorLabel}</FieldLabel>
+                  <Input id="processor_detail" name="processor_detail" defaultValue={asset?.processor_detail ?? ""} />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="ram_capacity_gb">{dict.ramLabel}</FieldLabel>
+                  <Input id="ram_capacity_gb" name="ram_capacity_gb" type="number" min="0" defaultValue={asset?.ram_capacity_gb ?? ""} />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="storage_detail">{dict.storageLabel}</FieldLabel>
+                  <Input id="storage_detail" name="storage_detail" defaultValue={asset?.storage_detail ?? ""} />
+                </Field>
+              </FieldGroup>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="sticky bottom-0 z-10 flex items-center justify-end gap-2 rounded-xl border bg-background/95 px-4 py-3 shadow-sm backdrop-blur-md">
           <Button type="button" variant="outline" onClick={goBack} disabled={pending}>
@@ -283,4 +311,3 @@ export function AssetForm({
     </div>
   );
 }
-

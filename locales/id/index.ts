@@ -610,6 +610,7 @@ export const id = {
     discardTitle: "Buang perubahan?",
     discardDesc: "Perubahan yang belum disimpan akan hilang.",
     discardConfirm: "Buang",
+    bastGenerated: "BAST berhasil dibuat",
   },
   maintenance: {
     title: "Pemeliharaan Aset",

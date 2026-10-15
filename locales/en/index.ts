@@ -613,6 +613,7 @@ export const en: TranslationSchema = {
     discardTitle: "Discard changes?",
     discardDesc: "Any unsaved changes will be lost.",
     discardConfirm: "Discard",
+    bastGenerated: "BAST generated successfully",
   },
   maintenance: {
     title: "Asset Maintenance",

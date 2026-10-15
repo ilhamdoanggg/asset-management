@@ -3,12 +3,10 @@
 import * as React from "react";
 import {
   ClipboardCheck,
-  Plus,
   Trash2,
   Eye,
   CheckCircle2,
   Clock,
-  AlertTriangle,
   MapPin,
   User,
   Pencil,
@@ -48,7 +46,7 @@ import type {
   AuditItem,
   AuditItemStatus,
   AuditStatus,
-} from "@/lib/audits";
+} from "@/types";
 import type { TranslationSchema } from "@/locales";
 
 type Dict = TranslationSchema["audits"];

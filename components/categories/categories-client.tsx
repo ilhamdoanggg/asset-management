@@ -19,7 +19,7 @@ import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { MasterLayout } from "@/components/master/master-layout";
 import { toast } from "@/components/ui/toast";
 import { saveCategoryAction, deleteCategoryAction } from "@/app/actions/categories";
-import type { Category } from "@/lib/categories";
+import type { Category } from "@/types";
 import type { TranslationSchema } from "@/locales";
 import { formatCompactIDR } from "@/lib/format";
 

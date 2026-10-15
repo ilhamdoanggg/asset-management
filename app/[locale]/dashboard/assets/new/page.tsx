@@ -1,10 +1,10 @@
-import { getDictionarySync, LOCALES, DEFAULT_LOCALE, type Locale } from "@/locales";
+export const instant = false;
+
+import { LOCALES, DEFAULT_LOCALE, type Locale, getDictionarySync } from "@/locales";
 import { getCategories } from "@/lib/categories";
 import { getVendors } from "@/lib/vendors";
 import { getLocations } from "@/lib/locations";
 import { AssetForm } from "@/components/assets/asset-form";
-
-export const instant = false;
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
@@ -36,4 +36,3 @@ export default async function NewAssetPage({
     />
   );
 }
-

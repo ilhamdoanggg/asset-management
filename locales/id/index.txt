@@ -1,0 +1,3 @@
+bastAssign: " BAST Penugasan Aset\
+bastListTitle: " Daftar BAST Aset\
+bastListTitle: " Daftar BAST Aset\
