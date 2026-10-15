@@ -37,7 +37,8 @@ proxy.ts                   # locale redirect + /dashboard* auth guard + security
 
 - **READ** via Server Components calling `lib/*.ts` queries; **WRITE** via Server Actions with locale-aware `revalidatePath`.
 - PKs are UUID (`string` in TS); tables use soft delete (`is_deleted = FALSE` filter).
-- UI uses semantic theme tokens only; tables use `DataTable`; forms use `FieldGroup` + `Alert`; feedback via `toast.promise`.
+- UI uses semantic theme tokens only; tables use `DataTable`; forms use `FieldGroup` + `Alert`; form modals use `DismissibleDialog` (button / X / ESC / overlay dismiss with unsaved-changes confirm); feedback via `toast.promise`.
+- Route changes render an instant skeleton via `loading.tsx` under `app/[locale]/dashboard/**`; shapes live in `components/dashboard/loading-skeletons.tsx`.
 - Full agent working rules live in `.agents/skills/asset-management/SKILL.md`.
 
 ## Verify

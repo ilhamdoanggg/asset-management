@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { DataTable, type DataTableColumn } from "@/components/ui/data-table";
-import { BlockingDialog } from "@/components/ui/blocking-dialog";
+import { DismissibleDialog } from "@/components/ui/dismissible-dialog";
 import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { MasterLayout } from "@/components/master/master-layout";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -240,8 +240,7 @@ export function DepreciationClient({
     });
   }
 
-  const selectClass =
-    "h-9 w-full rounded-md border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+  const selectClass = "w-full";
 
   return (
     <>
@@ -361,7 +360,7 @@ export function DepreciationClient({
       />
 
       {/* Manual Depreciation Dialog */}
-      <BlockingDialog
+      <DismissibleDialog
         open={openManualDialog}
         onOpenChange={setOpenManualDialog}
         title={dict.addEntry}
@@ -425,10 +424,10 @@ export function DepreciationClient({
             </Field>
           </FieldGroup>
         </form>
-      </BlockingDialog>
+      </DismissibleDialog>
 
       {/* Asset Disposal Dialog */}
-      <BlockingDialog
+      <DismissibleDialog
         open={openDisposalDialog}
         onOpenChange={setOpenDisposalDialog}
         title={dict.addDisposal}
@@ -527,7 +526,7 @@ export function DepreciationClient({
             </Field>
           </FieldGroup>
         </form>
-      </BlockingDialog>
+      </DismissibleDialog>
     </>
   );
 }

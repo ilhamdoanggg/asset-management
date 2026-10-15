@@ -18,7 +18,7 @@ import { DataTable, type DataTableColumn } from "@/components/ui/data-table";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
-import { BlockingDialog } from "@/components/ui/blocking-dialog";
+import { DismissibleDialog } from "@/components/ui/dismissible-dialog";
 import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { MasterLayout } from "@/components/master/master-layout";
 import { toast } from "@/components/ui/toast";
@@ -227,7 +227,7 @@ export function DepartmentsClient({ departments, dict }: { departments: Departme
         </DialogContent>
       </Dialog>
 
-      <BlockingDialog
+      <DismissibleDialog
         open={open}
         onOpenChange={setOpen}
         title={editing ? dict.editDepartment : dict.addDepartment}
@@ -269,7 +269,7 @@ export function DepartmentsClient({ departments, dict }: { departments: Departme
             </Field>
           </FieldGroup>
         </form>
-      </BlockingDialog>
+      </DismissibleDialog>
     </>
   );
 }

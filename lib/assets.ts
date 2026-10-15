@@ -97,6 +97,44 @@ export async function getAssets(): Promise<Asset[]> {
   }));
 }
 
+export async function getAsset(id: string): Promise<Asset | null> {
+  const rows = await sql<Array<Omit<Asset, "purchase_cost" | "salvage_value"> & { purchase_cost: string; salvage_value: string | null }>>`
+    SELECT a.id::text, a.asset_code, a.barcode, a.serial_number, a.name,
+           a.brand, a.model,
+           a.category_id::text, ac.name AS category_name, ac.code AS category_code,
+           a.vendor_id::text, v.name AS vendor_name,
+           a.location_id::text,
+           CASE WHEN l.id IS NOT NULL
+             THEN CONCAT_WS(' - ', l.building, NULLIF(l.floor, ''), l.room)
+             ELSE NULL END AS location_label,
+           a.assigned_to::text, e.full_name AS assignee_name, d.name AS department_name,
+           a.status, a.condition,
+           a.purchase_date::text, a.purchase_cost::text,
+           a.warranty_expiry::text,
+           a.depreciation_method, a.useful_life_years, a.salvage_value::text,
+           a.notes, a.specifications,
+           cs.computer_name, cs.ip_address::text, cs.os_name,
+           cs.processor_detail, cs.ram_capacity_gb, cs.storage_detail,
+           a.created_at::text
+    FROM assets a
+    JOIN asset_categories ac ON ac.id = a.category_id
+    LEFT JOIN vendors v ON v.id = a.vendor_id
+    LEFT JOIN locations l ON l.id = a.location_id
+    LEFT JOIN employees e ON e.id = a.assigned_to
+    LEFT JOIN departments d ON d.id = e.department_id
+    LEFT JOIN computer_specifications cs ON cs.asset_id = a.id
+    WHERE a.id = ${id} AND a.is_deleted = FALSE
+    LIMIT 1;
+  `;
+  const row = rows[0];
+  if (!row) return null;
+  return {
+    ...row,
+    purchase_cost: Number(row.purchase_cost ?? 0),
+    salvage_value: row.salvage_value == null ? null : Number(row.salvage_value),
+  };
+}
+
 export async function getAssetHistory(assetId: string): Promise<AssetHistoryItem[]> {
   const rows = await sql<Array<AssetHistoryItem>>`
     SELECT h.id::text AS history_id, h.created_at::text AS event_timestamp,

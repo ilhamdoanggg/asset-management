@@ -14,7 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ThemeCustomizer } from "@/components/theme-customizer";
-import { ThemePreview } from "@/components/theme-preview";
+// import { ThemePreview } from "@/components/theme-preview";
 import { HomeHero } from "@/components/home/home-hero";
 import { LanguageToggle } from "@/components/language-toggle";
 import { getDictionarySync, LOCALES, DEFAULT_LOCALE, type Locale } from "@/locales";
@@ -139,7 +139,7 @@ export default async function LocalizedHomePage({
           <MainContent locale={locale} />
         </Suspense>
 
-        <ThemePreview dict={dict.theme} />
+        {/*<ThemePreview dict={dict.theme} />*/}
       </main>
     </div>
   );

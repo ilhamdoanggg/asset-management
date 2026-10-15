@@ -10,7 +10,7 @@ import { DataTable, type DataTableColumn } from "@/components/ui/data-table";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
-import { BlockingDialog } from "@/components/ui/blocking-dialog";
+import { DismissibleDialog } from "@/components/ui/dismissible-dialog";
 import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { toast } from "@/components/ui/toast";
 import { MasterLayout } from "@/components/master/master-layout";
@@ -238,7 +238,7 @@ export function VendorsClient({ vendors, dict }: { vendors: Vendor[]; dict: Dict
         </DialogContent>
       </Dialog>
 
-      <BlockingDialog
+      <DismissibleDialog
         open={open}
         onOpenChange={setOpen}
         title={editing ? dict.editVendor : dict.addVendor}
@@ -282,7 +282,7 @@ export function VendorsClient({ vendors, dict }: { vendors: Vendor[]; dict: Dict
             </Field>
           </FieldGroup>
         </form>
-      </BlockingDialog>
+      </DismissibleDialog>
     </>
   );
 }

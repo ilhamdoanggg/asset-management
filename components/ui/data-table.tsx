@@ -20,6 +20,7 @@ import {
   Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink,
   PaginationNext, PaginationPrevious,
 } from "@/components/ui/pagination";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 
 export interface DataTableColumn<T> {
   header: React.ReactNode;
@@ -76,19 +77,20 @@ function PageSizeSelect({
 }) {
   return (
     <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
-      {t.show}
-      <select
+      <span>{t.show}</span>
+      <NativeSelect
+        size="sm"
         value={pageSize}
         onChange={(e) => onChange(Number(e.target.value))}
         aria-label={t.show}
-        className="h-9 rounded-md border border-input bg-background px-1.5 text-xs font-medium text-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="w-18"
       >
         {pageSizeOptions.map((n) => (
-          <option key={n} value={n}>
+          <NativeSelectOption key={n} value={n}>
             {n}
-          </option>
+          </NativeSelectOption>
         ))}
-      </select>
+      </NativeSelect>
     </label>
   );
 }
@@ -273,18 +275,19 @@ export function DataTable<T>({
               </PaginationContent>
             </Pagination>
             <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              {t.page}
-              <select
+              <span>{t.page}</span>
+              <NativeSelect
+                size="sm"
                 value={safePage}
                 onChange={(e) => goTo(Number(e.target.value))}
-                className="h-9 rounded-md border border-input bg-background px-1.5 text-xs font-medium text-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                className="w-24"
               >
                 {Array.from({ length: totalPages }, (_, i) => (
-                  <option key={i + 1} value={i + 1}>
+                  <NativeSelectOption key={i + 1} value={i + 1}>
                     {i + 1} / {totalPages}
-                  </option>
+                  </NativeSelectOption>
                 ))}
-              </select>
+              </NativeSelect>
             </label>
             </>
           )}

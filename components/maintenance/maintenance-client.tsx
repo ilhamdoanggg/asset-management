@@ -26,7 +26,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { BlockingDialog } from "@/components/ui/blocking-dialog";
+import { DismissibleDialog } from "@/components/ui/dismissible-dialog";
 import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { MasterLayout } from "@/components/master/master-layout";
 import { toast } from "@/components/ui/toast";
@@ -317,8 +317,7 @@ export function MaintenanceClient({
     });
   }
 
-  const selectClass =
-    "h-9 w-full rounded-md border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+  const selectClass = "w-full";
 
   return (
     <>
@@ -350,20 +349,21 @@ export function MaintenanceClient({
         ]}
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            {dict.tableStatus}
-            <select
+          <label className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+            <span>{dict.tableStatus}</span>
+            <NativeSelect
+              size="sm"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="h-9 rounded-md border border-input bg-background px-1.5 text-xs font-medium text-foreground outline-none"
+              className="w-40"
             >
-              <option value="">-</option>
+              <NativeSelectOption value="">-</NativeSelectOption>
               {STATUS_OPTIONS.map((s) => (
-                <option key={s} value={s}>
+                <NativeSelectOption key={s} value={s}>
                   {statusLabel(s, dict)}
-                </option>
+                </NativeSelectOption>
               ))}
-            </select>
+            </NativeSelect>
           </label>
           <p className="text-xs text-muted-foreground tabular-nums">
             {dict.activePending}: {inProgressCount} · {dict.completed}:{" "}
@@ -406,7 +406,7 @@ export function MaintenanceClient({
         onConfirm={() => deleting && onDelete(deleting)}
       />
 
-      <BlockingDialog
+      <DismissibleDialog
         open={completing !== null}
         onOpenChange={(o) => !o && setCompleting(null)}
         title={dict.markCompletedTitle}
@@ -449,7 +449,7 @@ export function MaintenanceClient({
             </Field>
           </FieldGroup>
         </div>
-      </BlockingDialog>
+      </DismissibleDialog>
 
       <Dialog open={detail !== null} onOpenChange={(o) => !o && setDetail(null)}>
         <DialogContent className="sm:max-w-lg">
@@ -515,7 +515,7 @@ export function MaintenanceClient({
         </DialogContent>
       </Dialog>
 
-      <BlockingDialog
+      <DismissibleDialog
         open={open}
         onOpenChange={setOpen}
         title={editing ? dict.editMaintenance : dict.addMaintenance}
@@ -668,7 +668,7 @@ export function MaintenanceClient({
             </Field>
           </FieldGroup>
         </form>
-      </BlockingDialog>
+      </DismissibleDialog>
     </>
   );
 }

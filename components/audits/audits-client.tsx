@@ -32,7 +32,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { BlockingDialog } from "@/components/ui/blocking-dialog";
+import { DismissibleDialog } from "@/components/ui/dismissible-dialog";
 import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { MasterLayout } from "@/components/master/master-layout";
 import { toast } from "@/components/ui/toast";
@@ -421,8 +421,7 @@ export function AuditsClient({
   const inProgressCount = audits.filter((a) => a.status === "in_progress").length;
   const completedCount = audits.filter((a) => a.status === "completed").length;
 
-  const selectClass =
-    "h-9 w-full rounded-md border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+  const selectClass = "w-full";
 
   return (
     <>
@@ -476,7 +475,7 @@ export function AuditsClient({
       </MasterLayout>
 
       {/* Create Audit Session Dialog */}
-      <BlockingDialog
+      <DismissibleDialog
         open={openCreate}
         onOpenChange={setOpenCreate}
         title={dict.createAudit}
@@ -551,7 +550,7 @@ export function AuditsClient({
             </Field>
           </FieldGroup>
         </form>
-      </BlockingDialog>
+      </DismissibleDialog>
 
       {/* Delete Confirmation */}
       <BlockingAlertDialog
@@ -751,7 +750,7 @@ export function AuditsClient({
       </Dialog>
 
       {/* Verify / Scan Asset Dialog */}
-      <BlockingDialog
+      <DismissibleDialog
         open={editingItem !== null}
         onOpenChange={(o) => !o && setEditingItem(null)}
         title={dict.scanAsset}
@@ -854,7 +853,7 @@ export function AuditsClient({
             </Field>
           </FieldGroup>
         </form>
-      </BlockingDialog>
+      </DismissibleDialog>
     </>
   );
 }

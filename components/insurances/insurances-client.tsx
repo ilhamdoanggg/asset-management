@@ -28,7 +28,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { BlockingDialog } from "@/components/ui/blocking-dialog";
+import { DismissibleDialog } from "@/components/ui/dismissible-dialog";
 import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { MasterLayout } from "@/components/master/master-layout";
 import { toast } from "@/components/ui/toast";
@@ -511,7 +511,7 @@ export function InsurancesClient({
         </DialogContent>
       </Dialog>
 
-      <BlockingDialog
+      <DismissibleDialog
         open={open}
         onOpenChange={setOpen}
         title={editing ? dict.editPolicy : dict.addPolicy}
@@ -589,7 +589,7 @@ export function InsurancesClient({
             </Field>
           </FieldGroup>
         </form>
-      </BlockingDialog>
+      </DismissibleDialog>
     </>
   );
 }
