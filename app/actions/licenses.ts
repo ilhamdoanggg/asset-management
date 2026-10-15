@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { sql } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { COOKIES, DEFAULT_LOCALE, LOCALES } from "@/lib/constants";
+import { getLicenseAllocations } from "@/lib/licenses";
 
 async function revalidateLicenses() {
   const cookieStore = await cookies();
@@ -86,5 +87,66 @@ export async function deleteLicenseAction(id: string): Promise<LicenseActionResu
   } catch (e) {
     console.error("deleteLicenseAction error:", e);
     return { error: "Gagal menghapus lisensi." };
+  }
+}
+
+export async function allocateLicenseAction(
+  licenseId: string,
+  assetId: string
+): Promise<LicenseActionResult> {
+  const session = await getSession();
+  if (!session) return { error: "Unauthorized" };
+
+  try {
+    // Check if already allocated to this asset
+    const existing = await sql<Array<{ id: string }>>`
+      SELECT id::text FROM asset_software_allocations
+      WHERE license_id = ${licenseId} AND asset_id = ${assetId};
+    `;
+    if (existing.length > 0) {
+      return { error: "Lisensi sudah terpasang pada aset ini." };
+    }
+
+    // Trigger trg_sync_license_seats_insert enforces seats limit automatically
+    await sql`
+      INSERT INTO asset_software_allocations (license_id, asset_id)
+      VALUES (${licenseId}, ${assetId});
+    `;
+    await revalidateLicenses();
+    return { success: true };
+  } catch (e) {
+    console.error("allocateLicenseAction error:", e);
+    return { error: "Gagal mengalokasikan lisensi. Kuota kursi mungkin sudah penuh." };
+  }
+}
+
+export async function deallocateLicenseAction(
+  allocationId: string
+): Promise<LicenseActionResult> {
+  const session = await getSession();
+  if (!session) return { error: "Unauthorized" };
+
+  try {
+    // Trigger trg_sync_license_seats_delete decrements seats automatically
+    await sql`
+      DELETE FROM asset_software_allocations WHERE id = ${allocationId};
+    `;
+    await revalidateLicenses();
+    return { success: true };
+  } catch (e) {
+    console.error("deallocateLicenseAction error:", e);
+    return { error: "Gagal melepaskan alokasi lisensi." };
+  }
+}
+
+export async function getLicenseAllocationsAction(licenseId: string) {
+  const session = await getSession();
+  if (!session) return { error: "Unauthorized" as const, allocations: [] as never[] };
+  try {
+    const allocations = await getLicenseAllocations(licenseId);
+    return { allocations };
+  } catch (e) {
+    console.error("getLicenseAllocationsAction error:", e);
+    return { error: "Gagal memuat alokasi lisensi." as const, allocations: [] as never[] };
   }
 }

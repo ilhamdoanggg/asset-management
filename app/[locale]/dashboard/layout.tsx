@@ -43,6 +43,10 @@ export default async function DashboardLayout({
               appName={dict.common.appName}
               fallback={dict.sidebar.dashboard}
               labels={{
+                assets: dict.sidebar.assets,
+                maintenance: dict.sidebar.maintenance,
+                depreciation: dict.sidebar.depreciation,
+                reports: dict.sidebar.reports,
                 vendors: dict.sidebar.vendors,
                 departments: dict.sidebar.departments,
                 locations: dict.sidebar.locations,

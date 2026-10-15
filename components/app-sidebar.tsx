@@ -12,6 +12,7 @@ import {
   MapPin,
   Wrench,
   Calculator,
+  ClipboardCheck,
   Store,
   BarChart3,
   Settings,
@@ -81,17 +82,22 @@ export function AppSidebar({ locale, dict, user }: AppSidebarProps) {
     },
     {
       title: dict.sidebar.assets,
-      href: `/${locale}/assets`,
+      href: `/${locale}/dashboard/assets`,
       icon: Package,
     },
     {
       title: dict.sidebar.maintenance,
-      href: `/${locale}/maintenance`,
+      href: `/${locale}/dashboard/maintenance`,
       icon: Wrench,
     },
     {
+      title: dict.sidebar.audits,
+      href: `/${locale}/dashboard/audits`,
+      icon: ClipboardCheck,
+    },
+    {
       title: dict.sidebar.depreciation,
-      href: `/${locale}/depreciation`,
+      href: `/${locale}/dashboard/depreciation`,
       icon: Calculator,
     },
   ];
@@ -145,7 +151,7 @@ export function AppSidebar({ locale, dict, user }: AppSidebarProps) {
   const systemNavigation = [
     {
       title: dict.sidebar.reports,
-      href: `/${locale}/reports`,
+      href: `/${locale}/dashboard/reports`,
       icon: BarChart3,
     },
     {

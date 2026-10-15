@@ -12,6 +12,15 @@ export interface SoftwareLicense {
   is_expired: boolean;
 }
 
+export interface LicenseAllocation {
+  id: string;
+  asset_id: string;
+  asset_code: string;
+  asset_name: string;
+  allocated_at: string;
+  user_name: string | null;
+}
+
 export async function getSoftwareLicenses(): Promise<SoftwareLicense[]> {
   const rows = await sql<
     Array<{
@@ -47,9 +56,37 @@ export async function getSoftwareLicenses(): Promise<SoftwareLicense[]> {
   }));
 }
 
+export async function getLicenseAllocations(
+  licenseId: string
+): Promise<LicenseAllocation[]> {
+  const rows = await sql<
+    Array<{
+      id: string;
+      asset_id: string;
+      asset_code: string;
+      asset_name: string;
+      allocated_at: string;
+      user_name: string | null;
+    }>
+  >`
+    SELECT
+      asa.id::text,
+      asa.asset_id::text,
+      a.asset_code,
+      a.name AS asset_name,
+      asa.allocated_at::text,
+      e.full_name AS user_name
+    FROM asset_software_allocations asa
+    JOIN assets a ON a.id = asa.asset_id
+    LEFT JOIN employees e ON e.id = a.assigned_to
+    WHERE asa.license_id = ${licenseId} AND a.is_deleted = FALSE
+    ORDER BY asa.allocated_at DESC;
+  `;
+  return rows;
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
-  (async () => {
-    const data = await getSoftwareLicenses();
-    console.log(JSON.stringify(data, null, 2));
-  })();
+  console.assert(typeof getSoftwareLicenses === "function", "getSoftwareLicenses missing");
+  console.assert(typeof getLicenseAllocations === "function", "getLicenseAllocations missing");
+  console.log("licenses lib self-check ok");
 }
