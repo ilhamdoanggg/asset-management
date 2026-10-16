@@ -12,7 +12,9 @@ async function runSettingsTests() {
   process.exit(0);
 }
 
-runSettingsTests().catch((err) => {
+runSettingsTests()
+  .then(() => process.exit(0))
+  .catch((err) => {
   console.error("Settings tests failed:", err);
   process.exit(1);
 });

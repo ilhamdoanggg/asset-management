@@ -99,7 +99,9 @@ async function runUserThemeTest() {
   }
 }
 
-runUserThemeTest().catch((err) => {
+runUserThemeTest()
+  .then(() => process.exit(0))
+  .catch((err) => {
   console.error("Test failed:", err);
   process.exit(1);
 });
