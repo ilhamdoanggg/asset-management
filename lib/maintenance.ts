@@ -1,25 +1,5 @@
 import { sql } from "@/lib/db";
-
-export type MaintenanceStatus = "scheduled" | "in_progress" | "completed" | "cancelled";
-
-export interface Maintenance {
-  id: string;
-  asset_id: string;
-  asset_code: string;
-  asset_name: string;
-  category_id: string | null;
-  category_name: string | null;
-  vendor_id: string | null;
-  vendor_name: string | null;
-  status: MaintenanceStatus;
-  scheduled_date: string | null;
-  completed_date: string | null;
-  cost: number;
-  performed_by: string | null;
-  invoice_number: string | null;
-  description: string;
-  created_at: string;
-}
+import type { Maintenance, MaintenanceStatus } from "@/types";
 
 export async function getMaintenances(): Promise<Maintenance[]> {
   const rows = await sql<

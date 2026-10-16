@@ -1,49 +1,11 @@
 import { sql } from "@/lib/db";
+import type {
+  ActivityLogReportItem,
+  CategoryValuationReportItem,
+  ComputerInventoryReportItem,
+  ReportsData,
+} from "@/types";
 
-export interface ComputerInventoryReportItem {
-  asset_id: string;
-  department_name: string | null;
-  ip_address: string | null;
-  asset_code: string;
-  computer_name: string | null;
-  user_name: string | null;
-  ms_office_version: string | null;
-  os_name: string | null;
-  processor_detail: string | null;
-  ram_capacity_gb: number | null;
-  storage_detail: string | null;
-  asset_status: string;
-  current_room: string | null;
-}
-
-export interface CategoryValuationReportItem {
-  category_name: string;
-  category_code: string;
-  asset_count: number;
-  total_purchase_cost: number;
-}
-
-export interface ActivityLogReportItem {
-  id: string;
-  action_type: string;
-  asset_code: string;
-  asset_name: string;
-  actor_name: string | null;
-  activity_summary: string | null;
-  notes: string | null;
-  event_timestamp: string;
-}
-
-export interface ReportsData {
-  computers: ComputerInventoryReportItem[];
-  categoryValuations: CategoryValuationReportItem[];
-  recentHistory: ActivityLogReportItem[];
-  metrics: {
-    totalComputers: number;
-    totalAssets: number;
-    totalValuation: number;
-  };
-}
 
 export async function getReportsData(): Promise<ReportsData> {
   const [computersResult, categoriesResult, historyResult, totalsResult] =

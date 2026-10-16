@@ -1,14 +1,5 @@
 import { sql } from "@/lib/db";
-
-export interface MaintenanceCategory {
-  id: string;
-  code: string;
-  name: string;
-  interval_days: number | null;
-  is_capitalized: boolean;
-  description: string | null;
-  usage_count: number;
-}
+import type { MaintenanceCategory } from "@/types";
 
 export async function getMaintenanceCategories(): Promise<MaintenanceCategory[]> {
   const rows = await sql<

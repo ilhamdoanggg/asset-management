@@ -1,17 +1,5 @@
 import { sql } from "@/lib/db";
-
-export interface Vendor {
-  id: string;
-  name: string;
-  contact_name: string | null;
-  phone: string | null;
-  email: string | null;
-  address: string | null;
-  description: string | null;
-  website: string | null;
-  notes: string | null;
-  created_at: string;
-}
+import type { Vendor } from "@/types";
 
 export async function getVendors(): Promise<Vendor[]> {
   const rows = await sql<Array<Vendor>>`

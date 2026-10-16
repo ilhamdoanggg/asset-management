@@ -1,25 +1,5 @@
 import { sql } from "@/lib/db";
-
-export interface SoftwareLicense {
-  id: string;
-  name: string;
-  license_key: string | null;
-  seats_total: number;
-  seats_used: number;
-  vendor_id: string | null;
-  vendor_name: string | null;
-  expiry_date: string | null;
-  is_expired: boolean;
-}
-
-export interface LicenseAllocation {
-  id: string;
-  asset_id: string;
-  asset_code: string;
-  asset_name: string;
-  allocated_at: string;
-  user_name: string | null;
-}
+import type { SoftwareLicense, LicenseAllocation } from "@/types";
 
 export async function getSoftwareLicenses(): Promise<SoftwareLicense[]> {
   const rows = await sql<

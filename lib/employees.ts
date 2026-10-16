@@ -1,18 +1,5 @@
 import { sql } from "@/lib/db";
-
-export interface Employee {
-  id: string;
-  nip: string;
-  full_name: string;
-  job_title: string | null;
-  email: string;
-  phone: string | null;
-  status: string;
-  department_id: string | null;
-  department_name: string | null;
-  asset_count: number;
-  created_at: string;
-}
+import type { Employee } from "@/types";
 
 export async function getEmployees(): Promise<Employee[]> {
   const rows = await sql<Array<Employee>>`

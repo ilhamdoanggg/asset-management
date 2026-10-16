@@ -1,36 +1,10 @@
 import { sql } from "@/lib/db";
+import type {
+  DepreciationEntry,
+  DepreciationSummary,
+  DisposalEntry,
+} from "@/types";
 
-export interface DepreciationEntry {
-  id: string;
-  asset_id: string;
-  asset_code: string;
-  asset_name: string;
-  category_name: string;
-  period_date: string;
-  depreciation_amount: number;
-  book_value: number;
-  created_at: string;
-}
-
-export interface DisposalEntry {
-  id: string;
-  asset_id: string;
-  asset_code: string;
-  asset_name: string;
-  disposal_date: string;
-  reason: string;
-  sale_price: number;
-  approved_by_name: string | null;
-  notes: string | null;
-  created_at: string;
-}
-
-export interface DepreciationSummary {
-  totalDepreciationValue: number;
-  totalBookValue: number;
-  totalEntries: number;
-  totalDisposals: number;
-}
 
 export async function getDepreciationData(): Promise<{
   entries: DepreciationEntry[];

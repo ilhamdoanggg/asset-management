@@ -1,56 +1,5 @@
 import { sql } from "@/lib/db";
-
-export interface DashboardMetricSummary {
-  totalAssets: number;
-  totalAssetValue: number;
-  assignedAssets: number;
-  assignedPercentage: number;
-  activeAssets: number;
-  activePercentage: number;
-  damagedAssets: number;
-  damagedPercentage: number;
-  backupAssets: number;
-  backupPercentage: number;
-  maintenancePending: number;
-  maintenanceCritical: number;
-}
-
-export interface CategoryDistributionItem {
-  category: string;
-  count: number;
-}
-
-export interface MonthlyTrendItem {
-  month: string;
-  acquisition: number;
-  maintenance: number;
-}
-
-export interface MonthlyCostItem {
-  month: string;
-  cost: number;
-}
-
-export interface RecentAssetItem {
-  id: string;
-  code: string;
-  name: string;
-  specs: string;
-  category: string;
-  categoryCode: string;
-  assignee: string;
-  department: string;
-  status: string;
-  cost: number;
-}
-
-export interface DashboardData {
-  metrics: DashboardMetricSummary;
-  categoryDistribution: CategoryDistributionItem[];
-  monthlyTrends: MonthlyTrendItem[];
-  maintenanceCosts: MonthlyCostItem[];
-  recentAssets: RecentAssetItem[];
-}
+import type {DashboardData, RecentAssetItem} from '@/types'
 
 export async function getDashboardData(): Promise<DashboardData> {
   const [
@@ -72,7 +21,7 @@ export async function getDashboardData(): Promise<DashboardData> {
         backup_count: number;
       }>
     >`
-      SELECT 
+      SELECT
         COUNT(*)::int AS total_count,
         COALESCE(SUM(purchase_cost), 0)::text AS total_value,
         COUNT(*) FILTER (WHERE assigned_to IS NOT NULL OR status IN ('in_use', 'active'))::int AS assigned_count,
@@ -89,7 +38,7 @@ export async function getDashboardData(): Promise<DashboardData> {
         critical_count: number;
       }>
     >`
-      SELECT 
+      SELECT
         COUNT(*)::int AS pending_count,
         COUNT(*) FILTER (WHERE cost >= 15000000)::int AS critical_count
       FROM asset_maintenances
@@ -103,7 +52,7 @@ export async function getDashboardData(): Promise<DashboardData> {
         count: number;
       }>
     >`
-      SELECT 
+      SELECT
         ac.name AS category,
         COUNT(a.id)::int AS count
       FROM asset_categories ac
@@ -140,7 +89,7 @@ export async function getDashboardData(): Promise<DashboardData> {
         WHERE scheduled_date >= CURRENT_DATE - INTERVAL '6 months'
         GROUP BY 1
       )
-      SELECT 
+      SELECT
         TO_CHAR(m.m_start, 'Mon') AS month,
         COALESCE(acq.cnt, 0)::int AS acquisition,
         COALESCE(mnt.cnt, 0)::int AS maintenance
@@ -196,7 +145,7 @@ export async function getDashboardData(): Promise<DashboardData> {
         specifications: Record<string, unknown> | null;
       }>
     >`
-      SELECT 
+      SELECT
         a.id,
         a.asset_code,
         a.name,

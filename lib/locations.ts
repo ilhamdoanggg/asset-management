@@ -1,15 +1,5 @@
 import { sql } from "@/lib/db";
-
-export interface Location {
-  id: string;
-  code: string;
-  building: string;
-  floor: string | null;
-  room: string;
-  address: string | null;
-  asset_count: number;
-  created_at: string;
-}
+import type { Location } from "@/types";
 
 export async function getLocations(): Promise<Location[]> {
   const rows = await sql<Array<Location>>`

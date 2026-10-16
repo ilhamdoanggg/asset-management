@@ -1,26 +1,5 @@
 import { sql } from "@/lib/db";
-
-export interface InsurancePolicy {
-  id: string;
-  policy_number: string;
-  provider: string;
-  start_date: string;
-  end_date: string;
-  notes: string | null;
-  premium: number;
-  asset_count: number;
-  is_active: boolean;
-  is_expired: boolean;
-}
-
-export interface InsuredAsset {
-  id: string;
-  asset_id: string;
-  asset_code: string;
-  asset_name: string;
-  insured_value: number;
-  created_at: string;
-}
+import type { InsurancePolicy, InsuredAsset } from "@/types";
 
 export async function getInsurancePolicies(): Promise<InsurancePolicy[]> {
   const rows = await sql<
