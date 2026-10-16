@@ -40,16 +40,11 @@ import {
   deallocateLicenseAction,
   getLicenseAllocationsAction,
 } from "@/app/actions/licenses";
-import type { SoftwareLicense, LicenseAllocation } from "@/lib/licenses";
+import type { SoftwareLicense, LicenseAllocation } from "@/types";
 import type { TranslationSchema } from "@/locales";
+import type { AssetOption } from "@/types";
 
 type Dict = TranslationSchema["licenses"];
-
-export interface AssetOption {
-  id: string;
-  name: string;
-  code: string;
-}
 
 export function LicensesClient({
   licenses,

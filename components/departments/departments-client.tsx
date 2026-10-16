@@ -23,7 +23,7 @@ import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { MasterLayout } from "@/components/master/master-layout";
 import { toast } from "@/components/ui/toast";
 import { saveDepartmentAction, deleteDepartmentAction } from "@/app/actions/departments";
-import type { Department } from "@/lib/departments";
+import type { Department } from "@/types";
 import type { TranslationSchema } from "@/locales";
 
 type Dict = TranslationSchema["departments"];

@@ -19,7 +19,7 @@ import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { MasterLayout } from "@/components/master/master-layout";
 import { toast } from "@/components/ui/toast";
 import { saveLocationAction, deleteLocationAction } from "@/app/actions/locations";
-import type { Location } from "@/lib/locations";
+import type { Location } from "@/types";
 import type { TranslationSchema } from "@/locales";
 
 type Dict = TranslationSchema["locations"];

@@ -20,7 +20,7 @@ import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { MasterLayout } from "@/components/master/master-layout";
 import { toast } from "@/components/ui/toast";
 import { saveMaintenanceCategoryAction, deleteMaintenanceCategoryAction } from "@/app/actions/maintenance-categories";
-import type { MaintenanceCategory } from "@/lib/maintenance-categories";
+import type { MaintenanceCategory } from "@/types";
 import type { TranslationSchema } from "@/locales";
 
 type Dict = TranslationSchema["maintenanceCategories"];

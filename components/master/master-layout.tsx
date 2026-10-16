@@ -1,17 +1,12 @@
 "use client";
 
 import * as React from "react";
+import { motion } from "motion/react";
 import { Plus, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/dashboard/dashboard-animated";
-
-export interface MasterStat {
-  label: string;
-  value: React.ReactNode;
-  icon: LucideIcon;
-  tile: string;
-}
+import type { MasterStat } from "@/types";
 
 interface MasterLayoutProps {
   icon: LucideIcon;
@@ -54,9 +49,21 @@ export function MasterLayout({
       </AnimatedSection>
 
       <AnimatedSection delay={0.08}>
-        <div className="grid gap-4 sm:grid-cols-3">
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
+          className="grid gap-4 sm:grid-cols-3"
+        >
           {stats.map((s) => (
-            <Card key={s.label} className="shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <motion.div
+              key={s.label}
+              variants={{
+                hidden: { opacity: 0, y: 12 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+              }}
+            >
+            <Card className="h-full shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
               <CardContent className="flex items-center gap-3 p-4">
                 <div className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${s.tile}`}>
                   <s.icon className="size-5" />
@@ -67,8 +74,9 @@ export function MasterLayout({
                 </div>
               </CardContent>
             </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </AnimatedSection>
 
       <AnimatedSection delay={0.16}>

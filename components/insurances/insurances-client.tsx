@@ -39,17 +39,12 @@ import {
   removeAssetFromPolicyAction,
   getInsuredAssetsAction,
 } from "@/app/actions/insurances";
-import type { InsurancePolicy, InsuredAsset } from "@/lib/insurances";
+import type { InsurancePolicy, InsuredAsset } from "@/types";
 import type { TranslationSchema } from "@/locales";
+import type { AssetOption } from "@/types";
 import { formatCompactIDR, formatCurrency } from "@/lib/format";
 
 type Dict = TranslationSchema["insurances"];
-
-export interface AssetOption {
-  id: string;
-  name: string;
-  code: string;
-}
 
 export function InsurancesClient({
   policies,

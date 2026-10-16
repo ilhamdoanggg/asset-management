@@ -15,7 +15,7 @@ import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { toast } from "@/components/ui/toast";
 import { MasterLayout } from "@/components/master/master-layout";
 import { saveVendorAction, deleteVendorAction } from "@/app/actions/vendors";
-import type { Vendor } from "@/lib/vendors";
+import type { Vendor } from "@/types";
 import type { TranslationSchema } from "@/locales";
 
 type Dict = TranslationSchema["vendors"];
