@@ -13,14 +13,13 @@ import { BlockingAlertDialog } from "@/components/ui/blocking-alert-dialog";
 import { toast } from "@/components/ui/toast";
 import { saveAssetAction } from "@/app/actions/assets";
 import type { Asset } from "@/types";
+import type { AssetOption, LocationOption } from "@/types";
 import {
   CONDITION_OPTIONS,
   STATUS_OPTIONS,
   selectClass,
   statusLabel,
   type AssetDict,
-  type AssetOption,
-  type LocationOption,
 } from "@/components/assets/asset-utils";
 
 interface AssetFormProps {

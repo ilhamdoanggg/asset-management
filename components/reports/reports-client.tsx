@@ -17,11 +17,11 @@ import { MasterLayout } from "@/components/master/master-layout";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatCurrency } from "@/lib/format";
 import type {
-  ComputerInventoryReportItem,
-  CategoryValuationReportItem,
   ActivityLogReportItem,
+  CategoryValuationReportItem,
+  ComputerInventoryReportItem,
   ReportsData,
-} from "@/lib/reports";
+} from "@/types";
 import type { TranslationSchema } from "@/locales";
 
 type Dict = TranslationSchema["reports"];

@@ -27,26 +27,11 @@ import {
   addDepreciationEntryAction,
   addDisposalAction,
 } from "@/app/actions/depreciation";
-import type {
-  DepreciationEntry,
-  DisposalEntry,
-  DepreciationSummary,
-} from "@/lib/depreciation";
+
 import type { TranslationSchema } from "@/locales";
+import type { AssetOption, DepreciationEntry, DepreciationSummary, DisposalEntry, EmployeeOption } from "@/types";
 
 type Dict = TranslationSchema["depreciation"];
-
-export interface AssetOption {
-  id: string;
-  name: string;
-  code: string;
-}
-
-export interface EmployeeOption {
-  id: string;
-  full_name: string;
-  nip: string;
-}
 
 export function DepreciationClient({
   entries,

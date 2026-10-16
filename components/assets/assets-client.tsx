@@ -20,21 +20,14 @@ import {
   checkoutAssetAction,
   returnAssetAction,
 } from "@/app/actions/assets";
-import type { Asset } from "@/types";
+import type { Asset, EmployeeOption, LocationOption } from "@/types";
 import {
   STATUS_OPTIONS,
   selectClass,
   statusLabel,
   statusVariant,
   type AssetDict,
-  type LocationOption,
 } from "@/components/assets/asset-utils";
-
-export interface EmployeeOption {
-  id: string;
-  full_name: string;
-  nip: string;
-}
 
 export function AssetsClient({
   assets,

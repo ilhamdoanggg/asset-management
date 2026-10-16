@@ -36,21 +36,11 @@ import {
   deleteMaintenanceAction,
   completeMaintenanceAction,
 } from "@/app/actions/maintenance";
-import type { Maintenance, MaintenanceStatus } from "@/lib/maintenance";
+import type { Maintenance, MaintenanceStatus, OptionItem } from "@/types";
 import type { TranslationSchema } from "@/locales";
+import type { AssetOption } from "@/types";
 
 type Dict = TranslationSchema["maintenance"];
-
-export interface AssetOption {
-  id: string;
-  name: string;
-  code: string;
-}
-
-export interface OptionItem {
-  id: string;
-  name: string;
-}
 
 const STATUS_OPTIONS: MaintenanceStatus[] = [
   "scheduled",

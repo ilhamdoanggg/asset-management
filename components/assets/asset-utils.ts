@@ -2,19 +2,6 @@ import type { TranslationSchema } from "@/locales";
 
 export type AssetDict = TranslationSchema["assets"];
 
-export interface AssetOption {
-  id: string;
-  name: string;
-  code?: string;
-}
-
-export interface LocationOption {
-  id: string;
-  code: string;
-  building: string;
-  room: string;
-}
-
 export const STATUS_OPTIONS = [
   "available",
   "in_use",

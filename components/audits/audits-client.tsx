@@ -41,27 +41,10 @@ import {
   deleteAuditAction,
   getAuditItemsAction,
 } from "@/app/actions/audits";
-import type {
-  AssetAudit,
-  AuditItem,
-  AuditItemStatus,
-  AuditStatus,
-} from "@/types";
+import type { AssetAudit, AuditItem, AuditItemStatus, AuditLocationOption, AuditStatus, AuditorOption } from "@/types";
 import type { TranslationSchema } from "@/locales";
 
 type Dict = TranslationSchema["audits"];
-
-export interface AuditorOption {
-  id: string;
-  name: string;
-  nip: string;
-}
-
-export interface LocationOption {
-  id: string;
-  room_name: string;
-  building_name: string;
-}
 
 function statusBadgeVariant(
   s: AuditStatus
@@ -103,7 +86,7 @@ export function AuditsClient({
 }: {
   audits: AssetAudit[];
   auditors: AuditorOption[];
-  locations: LocationOption[];
+  locations: AuditLocationOption[];
   dict: Dict;
 }) {
   const [query, setQuery] = React.useState("");
