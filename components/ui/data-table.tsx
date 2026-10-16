@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { AnimateView } from "@/components/ui/animate-view";
 import { Search } from "lucide-react";
 import {
   Table, TableHeader, TableRow, TableHead, TableBody, TableCell,
@@ -170,7 +171,10 @@ export function DataTable<T>({
           </div>
         </div>
       )}
-      <div className="overflow-x-auto rounded-md border">
+      <AnimateView
+        key={`${safePage}-${pageSize}-${data.length}`}
+        className="overflow-x-auto rounded-md border"
+      >
         <Table className={minWidthClass}>
           <TableHeader>
             <TableRow className="bg-muted/50 hover:bg-muted/50">
@@ -184,7 +188,7 @@ export function DataTable<T>({
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody key={`${safePage}-${pageSize}-${data.length}`}>
+          <TableBody>
             {paged.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-32 text-center">
@@ -198,11 +202,7 @@ export function DataTable<T>({
               </TableRow>
             ) : (
               paged.map((row, i) => (
-                <TableRow
-                  key={rowKey(row, i)}
-                  className="animate-in fade-in-0 slide-in-from-bottom-1 duration-200 hover:bg-muted/40"
-                  style={{ animationDelay: `${Math.min(i, 9) * 20}ms` }}
-                >
+                <TableRow key={rowKey(row, i)} className="hover:bg-muted/40">
                   {columns.map((c, j) => (
                     <TableCell key={j} className={c.cellClassName}>
                       {c.render(row)}
@@ -213,7 +213,7 @@ export function DataTable<T>({
             )}
           </TableBody>
         </Table>
-      </div>
+      </AnimateView>
       <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
         <p className="text-xs text-muted-foreground" aria-live="polite">
           {t.showing} {rangeStart}–{rangeEnd} {t.of} {data.length}

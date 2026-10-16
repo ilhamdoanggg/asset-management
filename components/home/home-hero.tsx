@@ -6,6 +6,26 @@ import { motion } from "motion/react";
 import { buttonVariants } from "@/components/ui/button";
 import type { Dictionary, Locale } from "@/lib/i18n";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 14 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
 export function HomeHero({
   dict,
   locale,
@@ -15,16 +35,17 @@ export function HomeHero({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
-      className="text-center space-y-6 max-w-md flex flex-col items-center"
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      className="flex max-w-md flex-col items-center gap-6 text-center"
     >
       <motion.div
+        variants={itemVariants}
         whileHover={{ scale: 1.06, rotate: 2 }}
         whileTap={{ scale: 0.96 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
-        className="flex size-16 items-center justify-center rounded-2xl border bg-background p-2 shadow-sm cursor-pointer"
+        className="flex size-16 items-center justify-center rounded-2xl border bg-background p-2 shadow-sm"
       >
         <Image
           src="/logo.png"
@@ -36,25 +57,19 @@ export function HomeHero({
         />
       </motion.div>
       <motion.h1
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] as const }}
+        variants={itemVariants}
         className="text-4xl font-extrabold tracking-tight"
       >
         {dict.heroTitle}
       </motion.h1>
       <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }}
+        variants={itemVariants}
         className="text-muted-foreground"
       >
         {dict.heroDesc}
       </motion.p>
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
+        variants={itemVariants}
         className="flex justify-center gap-4"
       >
         <Link
