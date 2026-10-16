@@ -628,8 +628,7 @@ AFTER INSERT ON asset_disposals
 FOR EACH ROW
 EXECUTE FUNCTION trg_fn_handle_asset_disposal();
 
--- License Seats Sync Trigger Function
--- ponytail: hanya INSERT/DELETE; UPDATE license_id dianggap lepas+pasang baru bila dibutuhkan
+-- License Seats Sync Trigger Function (INSERT / UPDATE / DELETE)
 CREATE OR REPLACE FUNCTION trg_fn_sync_license_seats()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -639,6 +638,19 @@ BEGIN
         WHERE id = NEW.license_id AND seats_used < seats_total;
         IF NOT FOUND THEN
             RAISE EXCEPTION 'License seats exhausted for license %', NEW.license_id;
+        END IF;
+        RETURN NEW;
+    ELSIF TG_OP = 'UPDATE' THEN
+        IF NEW.license_id IS DISTINCT FROM OLD.license_id THEN
+            UPDATE software_licenses
+            SET seats_used = GREATEST(seats_used - 1, 0)
+            WHERE id = OLD.license_id;
+            UPDATE software_licenses
+            SET seats_used = seats_used + 1
+            WHERE id = NEW.license_id AND seats_used < seats_total;
+            IF NOT FOUND THEN
+                RAISE EXCEPTION 'License seats exhausted for license %', NEW.license_id;
+            END IF;
         END IF;
         RETURN NEW;
     ELSIF TG_OP = 'DELETE' THEN
@@ -657,10 +669,33 @@ BEFORE INSERT ON asset_software_allocations
 FOR EACH ROW
 EXECUTE FUNCTION trg_fn_sync_license_seats();
 
+CREATE TRIGGER trg_sync_license_seats_update
+BEFORE UPDATE OF license_id ON asset_software_allocations
+FOR EACH ROW
+EXECUTE FUNCTION trg_fn_sync_license_seats();
+
 CREATE TRIGGER trg_sync_license_seats_delete
 AFTER DELETE ON asset_software_allocations
 FOR EACH ROW
 EXECUTE FUNCTION trg_fn_sync_license_seats();
+
+-- Log retention: purge append-only logs older than N days.
+-- Deploy-only (no automatic schedule); run manually or via cron/pg_cron.
+-- Returns rows deleted per table so callers can audit the purge.
+CREATE OR REPLACE FUNCTION sp_purge_old_logs(p_retention_days INT DEFAULT 365)
+RETURNS TABLE (purged_histories BIGINT, purged_activity BIGINT) AS $$
+DECLARE
+    v_cutoff TIMESTAMPTZ := NOW() - (p_retention_days || ' days')::INTERVAL;
+    v_h BIGINT;
+    v_a BIGINT;
+BEGIN
+    DELETE FROM asset_histories WHERE created_at < v_cutoff;
+    GET DIAGNOSTICS v_h = ROW_COUNT;
+    DELETE FROM activity_logs WHERE created_at < v_cutoff;
+    GET DIAGNOSTICS v_a = ROW_COUNT;
+    RETURN QUERY SELECT v_h, v_a;
+END;
+$$ LANGUAGE plpgsql;
 
 -- Audit History Logging Trigger
 CREATE OR REPLACE FUNCTION trg_fn_log_asset_history()
