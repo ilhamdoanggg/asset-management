@@ -5,15 +5,17 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { formatAssetValue } from "@/lib/format";
 import { getDictionarySync, LOCALES, DEFAULT_LOCALE, type Locale } from "@/locales";
 import { getDashboardData } from "@/lib/dashboard";
 import {
   AnimatedMetricGrid,
   AnimatedSection,
 } from "@/components/dashboard/dashboard-animated";
-import { DashboardCharts, type StatusSlice } from "@/components/dashboard/dashboard-charts";
+import { DashboardCharts } from "@/components/dashboard/dashboard-charts";
+import { CountUp } from "@/components/dashboard/count-up";
+import type { StatusSlice } from "@/types";
 import { RecentAssetsTable } from "@/components/dashboard/recent-assets-table";
+import { Wallet } from "lucide-react";
 
 export const instant = false;
 
@@ -103,14 +105,22 @@ export default async function DashboardPage({
       <h1 className="sr-only">{dict.dashboard.title}</h1>
       {/* Focal hero: portfolio valuation */}
       <AnimatedSection delay={0}>
-        <Card className="overflow-hidden border-0 bg-gradient-to-br from-primary via-primary to-primary/70 text-primary-foreground shadow-md">
-          <CardContent className="p-6">
+        <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-primary via-primary to-primary/70 text-primary-foreground shadow-md">
+          <Wallet
+            aria-hidden
+            className="pointer-events-none absolute -right-6 -bottom-8 size-44 rotate-[-12deg] opacity-10"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-24 right-16 size-64 rounded-full bg-white/10 blur-3xl"
+          />
+          <CardContent className="relative p-6">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider opacity-70">
                 {dict.dashboard.assetValue}
               </p>
               <p className="mt-1 font-heading text-3xl font-bold tabular-nums tracking-tight md:text-4xl">
-                {formatAssetValue(dbMetrics.totalAssetValue)}
+                <CountUp value={dbMetrics.totalAssetValue} />
               </p>
               <p className="mt-1 text-sm opacity-80">
                 {fill(dict.dashboard.headerMeta, {
@@ -119,6 +129,21 @@ export default async function DashboardPage({
                   n: newThisMonth,
                 })}
               </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {[
+                  { label: dict.dashboard.statusActive, value: dbMetrics.activeAssets },
+                  { label: dict.dashboard.statusBackup, value: dbMetrics.backupAssets },
+                  { label: dict.dashboard.statusDamaged, value: dbMetrics.damagedAssets },
+                ].map((s) => (
+                  <span
+                    key={s.label}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium tabular-nums ring-1 ring-white/20 backdrop-blur-sm"
+                  >
+                    <span className="text-sm font-bold">{s.value.toLocaleString("id-ID")}</span>
+                    {s.label}
+                  </span>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>

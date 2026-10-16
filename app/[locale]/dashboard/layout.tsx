@@ -4,6 +4,7 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/s
 import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { DashboardBreadcrumb } from "@/components/dashboard/dashboard-breadcrumb";
+import { RouteFade } from "@/components/dashboard/route-fade";
 import { ThemeCustomizer } from "@/components/theme-customizer";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -66,7 +67,7 @@ export default async function DashboardLayout({
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-6 p-4 md:p-6 lg:p-8">
-          {children}
+          <RouteFade>{children}</RouteFade>
         </main>
       </SidebarInset>
     </SidebarProvider>

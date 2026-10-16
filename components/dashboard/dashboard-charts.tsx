@@ -33,13 +33,8 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import type { TranslationSchema } from "@/locales";
+import type { StatusSlice } from "@/types";
 import { formatCompactIDR } from "@/lib/format";
-
-export interface StatusSlice {
-  name: string;
-  value: number;
-  fill: string;
-}
 
 interface DashboardChartsProps {
   dict: TranslationSchema;

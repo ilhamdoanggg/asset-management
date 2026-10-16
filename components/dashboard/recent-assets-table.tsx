@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DataTable, type DataTableColumn } from "@/components/ui/data-table";
 import { formatCurrency } from "@/lib/format";
-import type { RecentAssetItem } from "@/lib/dashboard";
+import type { RecentAssetItem } from "@/types";
 import type { TranslationSchema } from "@/locales";
 
 type Dict = TranslationSchema["dashboard"];
